@@ -1,0 +1,33 @@
+{
+  "name": "platzigram",
+  "version": "0.1.0",
+  "description": "Comparte tus fotos estudiando en Platzi con el resto de la comunidad",
+  "main": "dist/src/server.js",
+  "scripts": {
+    "start": "node dist/src/server.js",
+    "build": "babel src/server.js -d dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gabrielnz/platzigram.git"
+  },
+  "keywords": [
+    "platzi",
+    "javascript",
+    "js-definitivo",
+    "platzigram"
+  ],
+  "author": "Gabriel Nunez <gabriel.nzn@gmail.com> (https://github.com/gabrielnz)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Gabrielnz/platzigram/issues"
+  },
+  "homepage": "https://github.com/Gabrielnz/platzigram#readme",
+  "dependencies": {
+    "express": "4.15.2"
+  },
+  "devDependencies": {
+    "babel-cli": "6.24.1",
+    "babel-preset-env": "1.4.0"
+  }
+}

@@ -5,6 +5,9 @@ const app = Express()
 // las vistas HTML que se manden
 app.set('view engine', 'pug')
 
+// Define un middleware para que la app Express sirva la carpeta public/ de manera estatica
+app.use(Express.static(__dirname + '/public'))
+
 app.get('/', (req, res) => {
     res.render('index')
 })

@@ -24,7 +24,8 @@
   "homepage": "https://github.com/Gabrielnz/platzigram#readme",
   "dependencies": {
     "express": "4.15.2",
-    "materialize-css": "0.98.2"
+    "materialize-css": "0.98.2",
+    "pug": "2.0.0-beta11"
   },
   "devDependencies": {
     "gulp": "3.9.1",

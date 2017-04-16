@@ -1,7 +1,13 @@
 const Express = require('express')
 const app = Express()
 
-app.get('/', (req, res) => res.send('Hola mundo!'))
+// Se le especifica a la app que va a utilizar Pug como motor de plantillas, para renderizar
+// las vistas HTML que se manden
+app.set('view engine', 'pug')
+
+app.get('/', (req, res) => {
+    res.render('index')
+})
 
 app.listen(3000, (err) => {
   if (err) return console.log('Hubo un error', err), process.exit(1)

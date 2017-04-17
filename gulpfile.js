@@ -39,6 +39,8 @@ function compile(watch) {
       .transform(babel, {presets: ["es2015"]})
       // genera el bundle
       .bundle()
+      // si ocurre algun error, lo muestra por consola
+      .on('error', (err) => { console.log(err); this.emit('end'); })
       // convierte el bundle resultante en algo que gulp entiende
       .pipe(source('index.js'))
       // renombra el bundle a app

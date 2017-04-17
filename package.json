@@ -24,7 +24,6 @@
   },
   "homepage": "https://github.com/Gabrielnz/platzigram#readme",
   "dependencies": {
-    "empty-element": "1.0.0",
     "express": "4.15.2",
     "materialize-css": "0.98.2",
     "page": "1.7.1",

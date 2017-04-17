@@ -1,9 +1,12 @@
 const Page = require('page')
-const empty = require('empty-element')
 const signupTemplate = require('./template')
 
 Page('/signup', (context, next) => {
-  let main = document.getElementById('main-container')
+
+  // Usando jQuery para cambiar el titulo de la pagina
+  $('title').html('Platzigram - Signup')
+
+  let main = $('#main-container')
   // Limpia el elemento main-container y le inserta el contenido de signup
-  empty(main).appendChild(signupTemplate)
+  main.empty().append(signupTemplate)
 })

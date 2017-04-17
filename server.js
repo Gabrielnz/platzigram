@@ -8,8 +8,18 @@ app.set('view engine', 'pug')
 // Define un middleware para que la app Express sirva la carpeta public/ de manera estatica
 app.use(Express.static(__dirname + '/public'))
 
-// devuelve el index.html generado por gulp, para estas rutas
-app.get(['/', '/signup', '/signin'], (req, res) => {
+// devuelve el index.html generado por gulp, para esta ruta
+app.get('/', (req, res) => {
+    res.render('index')
+})
+
+// devuelve el index.html generado por gulp, para esta ruta
+app.get('/signup', (req, res) => {
+    res.render('index')
+})
+
+// devuelve el index.html generado por gulp, para esta ruta
+app.get('/signin', (req, res) => {
     res.render('index')
 })
 

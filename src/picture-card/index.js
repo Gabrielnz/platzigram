@@ -1,7 +1,22 @@
 const yo = require('yo-yo')
 
-module.exports = function pictureCard(pic) {
-  return yo`<div class="card">
+module.exports = function pictureCard(picture) {
+  let element
+
+  function like(liked){
+    picture.liked = liked
+    
+    picture.likes += liked ? 1 : -1
+
+    let newElement = render(picture)
+    yo.update(element, newElement)
+    // Se retorna false para que no continúe con la navegación hacia la ruta # definida en el anchor en donde se llama esta función
+    return false
+  }
+
+  function render(pic){
+
+    return yo`<div class="card ${pic.liked? 'liked' : ''}">
       <div class="card-image">
         <img class="activator" src="${pic.url}">
       </div>
@@ -12,9 +27,15 @@ module.exports = function pictureCard(pic) {
         </a>
         <small class="right time">Hace 1 dia</small>
         <p>
-          <a class="left" href="#"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+          <a class="left" href="#" onclick=${like.bind(null, true)}><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+          <a class="left" href="#" onclick=${like.bind(null, false)}><i class="fa fa-heart" aria-hidden="true"></i></a>
           <span class="left likes">${pic.likes} me gusta</span>
         </p>
       </div>
     </div>`
+  }
+
+  element = render(picture)
+
+  return element
 }

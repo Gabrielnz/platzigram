@@ -16,7 +16,7 @@ Page('/', (context, next) => {
       },
       url: 'http://materializecss.com/images/office.jpg',
       likes: '10',
-      liked: true
+      liked: false
     },
     {
       user: {

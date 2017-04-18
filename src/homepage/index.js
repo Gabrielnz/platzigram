@@ -16,7 +16,8 @@ Page('/', (context, next) => {
       },
       url: 'http://materializecss.com/images/office.jpg',
       likes: '10',
-      liked: true
+      liked: true,
+      createdAt: new Date()
     },
     {
       user: {
@@ -25,7 +26,8 @@ Page('/', (context, next) => {
       },
       url: 'http://materializecss.com/images/office.jpg',
       likes: '3',
-      liked: true
+      liked: true,
+      createdAt: new Date().setDate(new Date().getDate() - 10)
     }
   ]
 

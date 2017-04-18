@@ -1,5 +1,19 @@
 const yo = require('yo-yo')
-const moment = require('moment')
+
+// Si el navegador actual no tiene intl en su objeto global, le hace require al Polyfill de Format.js
+if (!window.Intl) {
+    window.Intl = require('intl') // polyfill for `Intl`
+    require('intl/locale-data/jsonp/en-US.js')
+    require('intl/locale-data/jsonp/es.js')
+}
+
+// Agregando internacionalizacion para las fechas en Browserify, con Format.js
+window.IntlRelativeFormat = require('intl-relativeformat')
+
+require('intl-relativeformat/dist/locale-data/en.js')
+require('intl-relativeformat/dist/locale-data/es.js')
+
+const rf = new IntlRelativeFormat('es')
 
 module.exports = function pictureCard(picture) {
   let element
@@ -26,7 +40,7 @@ module.exports = function pictureCard(picture) {
           <img src="${pic.user.avatar}" class="avatar" />
           <span class="username">${pic.user.username}</span>
         </a>
-        <small class="right time">${moment(pic.createdAt).fromNow()}</small>
+        <small class="right time">${rf.format(pic.createdAt)}</small>
         <p>
           <a class="left" href="#" onclick=${like.bind(null, true)}><i class="fa fa-heart-o" aria-hidden="true"></i></a>
           <a class="left" href="#" onclick=${like.bind(null, false)}><i class="fa fa-heart" aria-hidden="true"></i></a>

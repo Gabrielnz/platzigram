@@ -29,14 +29,25 @@ gulp.task('assets', () => {
 })
 
 function compile(watch) {
-  // watchify esta recibiendo el index que toma browserify,
-  // y bundle recibe un objeto que va a escuchar cada vez que ocurra algun cambio
-  let bundle = watchify(browserify('./src/index.js'))
+  
+  let bundle = browserify('./src/index.js', { debug: true })
+
+  // Si se quieren escuchar los cambios que ocurran en los archivos, se dispara
+  // un evento que hace rebundle cada vez que ocurran
+  if (watch) {
+    // watchify recibe el index que toma browserify,
+    // y bundle recibe un objeto que va a escuchar cada vez que ocurra algun cambio
+    bundle = watchify(bundle)
+    bundle.on('update', () => {
+      console.log('--> Bundling...')
+      rebundle()
+    })
+  }
 
   function rebundle() {
     bundle
       // transforma el archivo usando babel y el preset ES2015
-      .transform(babel, {presets: ["es2015"]})
+      .transform(babel, {presets: ["es2015"], plugins: ['syntax-async-functions', 'transform-regenerator']})
       // genera el bundle
       .bundle()
       // si ocurre algun error, lo muestra por consola
@@ -47,15 +58,6 @@ function compile(watch) {
       .pipe(rename('app.js'))
       // genera el archivo en la carpeta public
       .pipe(gulp.dest('public'))
-  }
-
-  // Si se quieren escuchar los cambios que ocurran en los archivos, se dispara
-  // un evento que hace rebundle cada vez que ocurran
-  if (watch) {
-    bundle.on('update', () => {
-      console.log('--> Bundling...')
-      rebundle()
-    })
   }
 
   // Ejecuta rebundle al menos una vez

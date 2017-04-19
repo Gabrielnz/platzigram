@@ -3,7 +3,7 @@ const homepageTemplate = require('./template')
 const headerMiddleware = require('../header')
 const axios = require('axios')
 
-Page('/', headerMiddleware, loadPicturesFetch, (context, next) => {
+Page('/', headerMiddleware, asyncLoadPictures, (context, next) => {
 
   // Usando jQuery para cambiar el titulo de la pagina
   $('title').html('Platzigram')
@@ -14,7 +14,7 @@ Page('/', headerMiddleware, loadPicturesFetch, (context, next) => {
   main.empty().append(homepageTemplate(context.pictures))
 })
 
-// Middleware para cargar las fotos usando Axios, antes de cargar el template de homepage
+// Middleware para cargar las fotos usando Axios
 function loadPicturesAxios(context, next) {
   
   console.log('Entra con Axios')
@@ -33,7 +33,7 @@ function loadPicturesAxios(context, next) {
     })
 }
 
-// Middleware para cargar las fotos usando Fetch, antes de cargar el template de homepage
+// Middleware para cargar las fotos usando Fetch
 function loadPicturesFetch(context, next) {
   
   console.log('Entra con Fetch')
@@ -51,4 +51,24 @@ function loadPicturesFetch(context, next) {
   .catch(function (err) {
     console.log(err)
   })
+}
+
+// Middleware para cargar las fotos usando Async/Await
+async function asyncLoadPictures(context, next) {
+  
+  console.log('Entra con Async/Await')
+  
+  try
+  {
+    const res = await fetch('/api/pictures')
+    const pics = await res.json()
+    // El contexto de los middlewares se utiliza para compartir informacion entre ellos
+    context.pictures = pics
+    // Llama al siguiente middleware
+    next()
+  }
+  catch (err)
+  {
+    return console.log(err)
+  }
 }

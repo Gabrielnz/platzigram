@@ -1,5 +1,21 @@
 const Express = require('express')
 const app = Express()
+const ext = require('file-extension')
+const multer  = require('multer')
+
+// Engine de almacenamiento local, otorga control total para almacenar archivos en disco
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './uploads')
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '.' + ext(file.originalname))
+  }
+})
+
+const upload = multer({ storage: storage }).single('picture')
+
+//const upload = multer({ dest: 'uploads/' })
 
 // Se le especifica a la app que va a utilizar Pug como motor de plantillas, para renderizar
 // las vistas HTML que se manden
@@ -54,6 +70,14 @@ app.get('/api/pictures', (req, res) => {
   	// Enviando las fotos
   	res.send(pictures)
   }, 2000)
+})
+
+app.post('/api/pictures', (req, res) => {
+  upload(req, res, function (err) {
+    if (err) return res.send(500, 'Error uploading file')
+
+    res.send('File uploaded')
+  })
 })
 
 app.listen(3000, (err) => {

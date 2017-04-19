@@ -21,7 +21,8 @@ let MESSAGES = {}
 MESSAGES.es = es
 MESSAGES['en-US'] = en
 
-const locale = 'es'
+// Si no existe una preferencia de idioma en localStorage, carga el idioma espanol
+const locale = localStorage.locale || 'es'
 
 module.exports = {
 	message: function (text, opts) {

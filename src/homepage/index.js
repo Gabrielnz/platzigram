@@ -15,7 +15,7 @@ Page('/', (context, next) => {
         avatar: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
       },
       url: 'http://materializecss.com/images/office.jpg',
-      likes: 10,
+      likes: 0,
       liked: false,
       createdAt: new Date()
     },
@@ -25,7 +25,7 @@ Page('/', (context, next) => {
         avatar: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
       },
       url: 'http://materializecss.com/images/office.jpg',
-      likes: 3,
+      likes: 2,
       liked: true,
       createdAt: new Date().setDate(new Date().getDate() - 10)
     }

@@ -1,36 +1,30 @@
 const Page = require('page')
 const homepageTemplate = require('./template')
+const headerMiddleware = require('../header')
+const request = require('superagent')
 
-Page('/', (context, next) => {
+Page('/', headerMiddleware, loadPictures, (context, next) => {
 
   // Usando jQuery para cambiar el titulo de la pagina
   $('title').html('Platzigram')
 
   let main = $('#main-container')
 
-  let pictures = [
-    {
-      user: {
-        username: 'bladelizard',
-        avatar: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
-      },
-      url: 'http://materializecss.com/images/office.jpg',
-      likes: 0,
-      liked: false,
-      createdAt: new Date()
-    },
-    {
-      user: {
-        username: 'bladelizard',
-        avatar: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
-      },
-      url: 'http://materializecss.com/images/office.jpg',
-      likes: 2,
-      liked: true,
-      createdAt: new Date().setDate(new Date().getDate() - 10)
-    }
-  ]
-
   // Limpia el elemento main-container y le inserta el contenido del homepage
-  main.empty().append(homepageTemplate(pictures))
+  main.empty().append(homepageTemplate(context.pictures))
 })
+
+// Middleware para cargar las fotos, antes de cargar el template de homepage
+function loadPictures(context, next) {
+  request
+    // Envia la solicitud de las fotos a la API
+    .get('/api/pictures')
+    .end(function (err, res) {
+      // Si ocurre un error, termina la ejecucion de esta funcion y muestra el error
+      if(err) return console.log(err)
+      // El contexto de los middlewares se utiliza para compartir informacion entre ellos
+      context.pictures = res.body
+      // Llama al siguiente middleware
+      next()
+    })
+}

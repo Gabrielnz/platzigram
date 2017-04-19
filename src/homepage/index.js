@@ -1,7 +1,7 @@
 const Page = require('page')
 const homepageTemplate = require('./template')
 const headerMiddleware = require('../header')
-const request = require('superagent')
+const axios = require('axios')
 
 Page('/', headerMiddleware, loadPictures, (context, next) => {
 
@@ -16,15 +16,16 @@ Page('/', headerMiddleware, loadPictures, (context, next) => {
 
 // Middleware para cargar las fotos, antes de cargar el template de homepage
 function loadPictures(context, next) {
-  request
+  axios
     // Envia la solicitud de las fotos a la API
     .get('/api/pictures')
-    .end(function (err, res) {
-      // Si ocurre un error, termina la ejecucion de esta funcion y muestra el error
-      if(err) return console.log(err)
+    .then(function (res) {
       // El contexto de los middlewares se utiliza para compartir informacion entre ellos
-      context.pictures = res.body
+      context.pictures = res.data
       // Llama al siguiente middleware
       next()
+    })
+    .catch(function (err) {
+      console.log(err)
     })
 }

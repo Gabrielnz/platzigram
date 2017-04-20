@@ -46,7 +46,7 @@ app.get('/api/pictures', (req, res) => {
     {
       user: {
         username: 'bladelizard',
-        avatar: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
+        avatar: 'https://pbs.twimg.com/profile_images/849779346864787456/UBl2XoKX.jpg'
       },
       url: 'http://materializecss.com/images/office.jpg',
       likes: 0,
@@ -56,7 +56,7 @@ app.get('/api/pictures', (req, res) => {
     {
       user: {
         username: 'bladelizard',
-        avatar: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
+        avatar: 'https://pbs.twimg.com/profile_images/849779346864787456/UBl2XoKX.jpg'
       },
       url: 'http://materializecss.com/images/office.jpg',
       likes: 2,
@@ -64,12 +64,8 @@ app.get('/api/pictures', (req, res) => {
       createdAt: new Date().setDate(new Date().getDate() - 10)
     }
   ]
-
-  // Simulando el tiempo que toma hacer la consulta a la base de datos
-  setTimeout(() => {
-  	// Enviando las fotos
-  	res.send(pictures)
-  }, 2000)
+  // Enviando las fotos
+  res.send(pictures)
 })
 
 app.post('/api/pictures', (req, res) => {
@@ -78,6 +74,44 @@ app.post('/api/pictures', (req, res) => {
 
     res.send('File uploaded')
   })
+})
+
+app.get('/api/user/:username', (req, res) => {
+  const user = {
+    username: 'bladelizard',
+    avatar: 'https://pbs.twimg.com/profile_images/849779346864787456/UBl2XoKX.jpg',
+    pictures: [
+    {
+      id: 1,
+      src: 'http://materializecss.com/images/office.jpg',
+      likes: 3
+    },
+    {
+      id: 2,
+      src: 'http://www.favourites.sg/wp-content/uploads/high-school-students-in-classroom-54tokmmx.jpg',
+      likes: 10
+    },
+    {
+      id: 3,
+      src: 'https://www.smccme.edu/wp-content/uploads/2016/07/High-School-Students_P-header_1024x308_6-16.jpg.jpg',
+      likes: 1
+    },
+    {
+      id: 4,
+      src: 'http://www.psu.edu/sites/default/files/CS_howdoi.jpg',
+      likes: 24
+    },
+    {
+      id: 5,
+      src: 'http://materializecss.com/images/office.jpg',
+      likes: 0
+    }]
+  }
+  res.send(user)
+})
+
+app.get('/:username', (req, res) => {
+  res.render('index')
 })
 
 app.listen(3000, (err) => {

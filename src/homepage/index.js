@@ -1,9 +1,9 @@
 const Page = require('page')
 const homepageTemplate = require('./template')
-const headerMiddleware = require('../header')
+const header = require('../header')
 const axios = require('axios')
 
-Page('/', headerMiddleware, asyncLoadPictures, (context, next) => {
+Page('/', header, loading, asyncLoadPictures, (context, next) => {
 
   // Usando jQuery para cambiar el titulo de la pagina
   $('title').html('Platzigram')
@@ -13,6 +13,13 @@ Page('/', headerMiddleware, asyncLoadPictures, (context, next) => {
   // Limpia el elemento main-container y le inserta el contenido del homepage
   main.empty().append(homepageTemplate(context.pictures))
 })
+
+function loading(context, next) {
+  const element = document.createElement('div')
+  element.classList.add('loader')
+  document.getElementById('main-container').appendChild(element)
+  next()
+}
 
 // Middleware para cargar las fotos usando Axios
 function loadPicturesAxios(context, next) {

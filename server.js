@@ -64,8 +64,8 @@ app.get('/api/pictures', (req, res) => {
       createdAt: new Date().setDate(new Date().getDate() - 10)
     }
   ]
-  // Enviando las fotos
-  res.send(pictures)
+
+  setTimeout(() => res.send(pictures), 2000)
 })
 
 app.post('/api/pictures', (req, res) => {

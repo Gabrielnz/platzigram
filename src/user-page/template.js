@@ -19,10 +19,20 @@ export default function userPageTemplate(user) {
       <div class="row">
         ${user.pictures.map((pic) => {
           return yo`<div class="col s12 m6 l4">
-            <div class="picture-container">
+            <a href="/${user.username}/${pic.id}" class="picture-container">
               <img class="picture" src="${pic.src}" />
               <div class="likes">
                 <i class="fa fa-heart" aria-hidden="true"></i> ${pic.likes}
+              </div>
+            </a>
+            <div id="modal${pic.id}" class="modal modal-fixed-footer">
+              <div class="modal-content center">
+                <img src="${pic.src}" />
+              </div>
+              <div class="modal-footer">
+                <div class="btn btn-flat likes">
+                  <i class="fa fa-heart" aria-hidden="true"></i> ${translate.message('likes', { likes: pic.likes })}
+                </div>
               </div>
             </div>
           </div>`

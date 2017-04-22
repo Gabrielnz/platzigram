@@ -2,15 +2,35 @@ const yo = require('yo-yo')
 const translate = require('../translate')
 
 module.exports = function pictureCard(picture) {
+
   let element
 
-  function like(liked){
-    picture.liked = liked
+  function doRender() {
+    const newElement = render(picture)
+    yo.update(element, newElement)
+  }
+
+  function like(liked, dblckick) {
+
+    // Si le dio doble click a la foto
+    if (dblckick) {
+      picture.likedHeart = picture.liked = !picture.liked
+      liked = picture.liked
+
+      // Si le dio like a la foto
+      if(picture.likedHeart){
+        setTimeout(() => {
+          picture.likedHeart = false
+          doRender()
+        }, 1500)
+      }
+    } else {
+      picture.liked = liked
+    }
     
     picture.likes += liked ? 1 : -1
+    doRender()
 
-    let newElement = render(picture)
-    yo.update(element, newElement)
     // Se retorna false para que no continúe con la navegación hacia la ruta # definida en el anchor en donde se llama esta función
     return false
   }
@@ -19,7 +39,8 @@ module.exports = function pictureCard(picture) {
 
     return yo`<div class="card ${pic.liked ? 'liked' : ''}">
       <div class="card-image">
-        <img class="activator" src="${pic.url}">
+        <img class="activator" src="${pic.url}" ondblclick=${like.bind(null, null, true)} />
+        <i class="fa fa-heart like-heart ${pic.likedHeart ? 'liked' : ''}" aria-hidden="true"></i>
       </div>
       <div class="card-content">
         <a href="/${pic.user.username}" class="card-title">

@@ -1,21 +1,22 @@
-const Express = require('express')
-const app = Express()
-const ext = require('file-extension')
-const multer  = require('multer')
+'use strict'
 
-// Engine de almacenamiento local, otorga control total para almacenar archivos en disco
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, './uploads')
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + '.' + ext(file.originalname))
-  }
+const Express = require('express')
+let app = Express()
+const bodyParser = require('body-parser')
+const fileUpload = require('express-fileupload')
+const config = require('./config')
+const cloudinary = require('cloudinary')
+
+// Configurando cloudinary
+cloudinary.config({ 
+  cloud_name: 'bladelizard', 
+  api_key: config.cloudinary.api_key, 
+  api_secret: config.cloudinary.api_secret
 })
 
-const upload = multer({ storage: storage }).single('picture')
-
-//const upload = multer({ dest: 'uploads/' })
+app.use(fileUpload())
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
 
 // Se le especifica a la app que va a utilizar Pug como motor de plantillas, para renderizar
 // las vistas HTML que se manden
@@ -69,12 +70,15 @@ app.get('/api/pictures', (req, res) => {
 })
 
 app.post('/api/pictures', (req, res) => {
-  upload(req, res, function (err) {
-    if (err) return res.send(500, 'Error uploading file')
 
-    res.send('File uploaded')
-  })
+  const file = req.files.picture
+
+  // Subiendo la imagen a cloudinary
+  cloudinary.uploader.upload_stream(function(result) {
+    res.status(200).send(result)
+  }).end(file.data)
 })
+
 
 app.get('/api/user/:username', (req, res) => {
   const user = {

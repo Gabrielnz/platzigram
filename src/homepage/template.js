@@ -5,6 +5,7 @@ const translate = require('../translate').message
 const axios = require('axios')
 
 module.exports = function (pictures) {
+
   const template = yo`<div class="container timeline">
     <div class="row">
       <div class="col s12 m10 offset-m1 l8 offset-2 center-align">
@@ -39,25 +40,21 @@ module.exports = function (pictures) {
     document.getElementById('formUpload').reset()
   }
 
-  function onchange() {
+  function onchange(ev) {
     toggleButtons()
   }
 
-  function onSubmit(ev) {
+function onSubmit(ev) {
     
     ev.preventDefault()
 
     // this hace referencia al formulario, ya que este evento es disparado por el mismo formulario
-    let data = new FormData(this)
+    const data = new FormData(this)
 
     axios
       .post('/api/pictures', data)
-      .then(function(res) {
-        
-      })
-      .catch(function(err) {
-        console.log(err)
-      })
+      .then(res => console.log('response', res))
+      .catch(err => console.log('error', err))
   }
 
   return layout(template)
